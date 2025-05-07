@@ -26,7 +26,7 @@ func CustomErrorMiddleware(h http.Handler) http.Handler {
 						case "min":
 							errFields[eFieldLower] = fmt.Sprintf("%s is should be more or equal than %s character", eFieldLower, e.Param())
 						case "max":
-							errFields[eFieldLower] = fmt.Sprintf("%s is should be more or equal than %s character", eFieldLower, e.Param())
+							errFields[eFieldLower] = fmt.Sprintf("%s is should be less or equal than %s character", eFieldLower, e.Param())
 						case "gte":
 							errFields[eFieldLower] = fmt.Sprintf("%s is should be greater or equal than %s", eFieldLower, e.Param())
 						case "lte":
