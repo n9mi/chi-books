@@ -13,6 +13,8 @@ func BookRouter(r chi.Router, bookHandler *handler.BookHandler) {
 
 		r.Route("/{id}", func(r chi.Router) {
 			r.Get("/", bookHandler.GetByID)
+			r.Put("/", bookHandler.Update)
+			r.Delete("/", bookHandler.Delete)
 		})
 	})
 }

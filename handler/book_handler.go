@@ -56,3 +56,34 @@ func (h *BookHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 	response.DataJSONResponse(w, http.StatusOK, true, res)
 }
+
+func (h *BookHandler) Update(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	req := new(request.BookRequest)
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		errConv := &exception.HTTPError{
+			StatusCode: http.StatusBadRequest,
+			Message:    "failed to parse JSON",
+		}
+		panic(errConv)
+	}
+
+	res, err := h.BookService.Update(r.Context(), id, req)
+	if err != nil {
+		panic(err)
+	}
+
+	response.DataJSONResponse(w, http.StatusOK, true, res)
+}
+
+func (h *BookHandler) Delete(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+
+	err := h.BookService.Delete(r.Context(), id)
+	if err != nil {
+		panic(err)
+	}
+
+	response.DataJSONResponse(w, http.StatusOK, true, nil)
+}

@@ -44,6 +44,23 @@ func (r *BookRepositoryImpl) InsertOne(book *entity.Book) {
 	getStorage().books[book.ID] = book
 }
 
+// update a book by id
+func (r *BookRepositoryImpl) UpdateOne(id string, book *entity.Book) {
+	// assume that the record is exists. double check that FindOne is called first
+	bookPtr := getStorage().books[id]
+	book.ID = bookPtr.ID
+	book.CreatedAt = bookPtr.CreatedAt
+	book.UpdatedAt = time.Now()
+
+	getStorage().books[id] = book
+}
+
+// delete book by id
+func (r *BookRepositoryImpl) DeleteOne(id string) {
+	// assume that the record is exists. double check that FindOne is called first
+	delete(getStorage().books, id)
+}
+
 // delete all k,v pair in books map
 func (r *BookRepositoryImpl) Truncate() {
 	for key := range getStorage().books {

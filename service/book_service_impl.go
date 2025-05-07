@@ -66,3 +66,41 @@ func (s *BookServiceImpl) Create(ctx context.Context, req *request.BookRequest) 
 	bookRes := response.ToBookResponse(bookE)
 	return bookRes, nil
 }
+
+// update a book
+func (s *BookServiceImpl) Update(ctx context.Context, id string, req *request.BookRequest) (*response.BookResponse, error) {
+	if err := s.Validator.Struct(req); err != nil {
+		return nil, err
+	}
+
+	_, exists := s.BookRepository.FindOne(id)
+	if !exists {
+		err := &exception.HTTPError{
+			StatusCode: http.StatusNotFound,
+			Message:    fmt.Sprintf("book with id %s doesn't exists", id),
+		}
+		return nil, err
+	}
+
+	bookE := req.ToEntity()
+	s.BookRepository.UpdateOne(id, bookE)
+
+	bookRes := response.ToBookResponse(bookE)
+	return bookRes, nil
+}
+
+// delete a book
+func (s *BookServiceImpl) Delete(ctx context.Context, id string) error {
+	_, exists := s.BookRepository.FindOne(id)
+	if !exists {
+		err := &exception.HTTPError{
+			StatusCode: http.StatusNotFound,
+			Message:    fmt.Sprintf("book with id %s doesn't exists", id),
+		}
+		return err
+	}
+
+	s.BookRepository.DeleteOne(id)
+
+	return nil
+}
