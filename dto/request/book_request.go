@@ -8,6 +8,7 @@ type BookRequest struct {
 	PublishedYear int    `json:"published_year" validate:"required,gte=1"`
 }
 
+// request to entity mapper
 func (r *BookRequest) ToEntity() *entity.Book {
 	return &entity.Book{
 		Title:         r.Title,

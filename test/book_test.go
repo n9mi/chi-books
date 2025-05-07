@@ -25,7 +25,6 @@ type bookResponse struct {
 }
 
 func TestGetAllBooks(t *testing.T) {
-
 	numBooks := 10
 	newBooks := make([]entity.Book, numBooks)
 	for i := 0; i < numBooks; i++ {

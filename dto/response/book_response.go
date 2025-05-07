@@ -14,6 +14,7 @@ type BookResponse struct {
 	UpdatedAt     time.Time `json:"updated_at"`
 }
 
+// entity to response mapper
 func ToBookResponse(e *entity.Book) *BookResponse {
 	return &BookResponse{
 		ID:            e.ID,

@@ -21,12 +21,14 @@ func NewBookHandler(bookService service.BookService) *BookHandler {
 	}
 }
 
+// get all books in form of slice
 func (h *BookHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	res := h.BookService.FindAll(r.Context())
 
 	response.DataJSONResponse(w, http.StatusOK, true, res)
 }
 
+// get single book by id
 func (h *BookHandler) GetByID(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
@@ -38,6 +40,7 @@ func (h *BookHandler) GetByID(w http.ResponseWriter, r *http.Request) {
 	response.DataJSONResponse(w, http.StatusOK, true, res)
 }
 
+// create a new book
 func (h *BookHandler) Create(w http.ResponseWriter, r *http.Request) {
 	req := new(request.BookRequest)
 
@@ -57,6 +60,7 @@ func (h *BookHandler) Create(w http.ResponseWriter, r *http.Request) {
 	response.DataJSONResponse(w, http.StatusOK, true, res)
 }
 
+// update existing book. returns error when book id doesn't exists
 func (h *BookHandler) Update(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	req := new(request.BookRequest)
@@ -77,6 +81,7 @@ func (h *BookHandler) Update(w http.ResponseWriter, r *http.Request) {
 	response.DataJSONResponse(w, http.StatusOK, true, res)
 }
 
+// delete existing book. returns error when book id doesn't exists
 func (h *BookHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 

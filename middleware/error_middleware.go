@@ -9,6 +9,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// default fallback for panic(err) and translate it to JSON response
 func CustomErrorMiddleware(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {

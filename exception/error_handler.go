@@ -4,6 +4,7 @@ import (
 	"net/http"
 )
 
+// default not found handler
 func CustomNotFoundHandler(w http.ResponseWriter, r *http.Request) {
 	errRes := &HTTPError{
 		StatusCode: http.StatusNotFound,
@@ -13,6 +14,7 @@ func CustomNotFoundHandler(w http.ResponseWriter, r *http.Request) {
 	ErrorJSONResponse(w, errRes)
 }
 
+// default method not allowed handler
 func CustomMethodNotAllowedHandler(w http.ResponseWriter, r *http.Request) {
 	errRes := &HTTPError{
 		StatusCode: http.StatusMethodNotAllowed,

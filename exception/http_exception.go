@@ -5,6 +5,7 @@ type HTTPError struct {
 	Message    string
 }
 
+// overload func
 func (e *HTTPError) Error() string {
 	return e.Message
 }

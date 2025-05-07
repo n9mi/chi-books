@@ -11,6 +11,7 @@ type ErrorResponse struct {
 	Errors     map[string]string `json:"errors"`
 }
 
+// costumized JSON response writer for single message error response
 func ErrorJSONResponse(w http.ResponseWriter, httpErr *HTTPError) {
 	errRes := ErrorResponse{
 		StatusCode: httpErr.StatusCode,
@@ -22,6 +23,7 @@ func ErrorJSONResponse(w http.ResponseWriter, httpErr *HTTPError) {
 	response.JSONResponse(w, errRes.StatusCode, errRes)
 }
 
+// costumized JSON response writer for structured error response (ex: request validation)
 func ErrorWithFieldsJSONResponse(w http.ResponseWriter, statusCode int, fields map[string]string) {
 	errRes := ErrorResponse{
 		StatusCode: statusCode,

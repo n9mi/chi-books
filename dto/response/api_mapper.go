@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// JSON response writer
 func JSONResponse(w http.ResponseWriter, statusCode int, content interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -12,6 +13,7 @@ func JSONResponse(w http.ResponseWriter, statusCode int, content interface{}) {
 	json.NewEncoder(w).Encode(content)
 }
 
+// costumized JSON response writer for structured data response
 func DataJSONResponse(w http.ResponseWriter, statusCode int, success bool, data interface{}) {
 	res := DataResponse{
 		StatusCode: statusCode,
