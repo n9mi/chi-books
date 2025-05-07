@@ -3,8 +3,11 @@ package service
 import (
 	"chi-books/dto/request"
 	"chi-books/dto/response"
+	"chi-books/exception"
 	"chi-books/repository"
 	"context"
+	"fmt"
+	"net/http"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -34,6 +37,21 @@ func (s *BookServiceImpl) FindAll(ctx context.Context) []*response.BookResponse 
 	}
 
 	return booksRes
+}
+
+// find a book by id
+func (s *BookServiceImpl) FindOne(ctx context.Context, id string) (*response.BookResponse, *exception.HTTPError) {
+	bookE, exists := s.BookRepository.FindOne(id)
+	if !exists {
+		err := &exception.HTTPError{
+			StatusCode: http.StatusNotFound,
+			Message:    fmt.Sprintf("book with id %s doesn't exists", id),
+		}
+		return nil, err
+	}
+
+	bookRes := response.ToBookResponse(bookE)
+	return bookRes, nil
 }
 
 // create a book

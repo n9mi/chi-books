@@ -7,6 +7,8 @@ import (
 	"chi-books/service"
 	"encoding/json"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
 )
 
 type BookHandler struct {
@@ -21,6 +23,17 @@ func NewBookHandler(bookService service.BookService) *BookHandler {
 
 func (h *BookHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	res := h.BookService.FindAll(r.Context())
+
+	response.DataJSONResponse(w, http.StatusOK, true, res)
+}
+
+func (h *BookHandler) GetByID(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+
+	res, err := h.BookService.FindOne(r.Context(), id)
+	if err != nil {
+		panic(err)
+	}
 
 	response.DataJSONResponse(w, http.StatusOK, true, res)
 }

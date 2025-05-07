@@ -7,6 +7,7 @@ import (
 	"chi-books/repository"
 	"chi-books/router"
 	"chi-books/service"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/httplog/v2"
@@ -14,6 +15,8 @@ import (
 
 func NewApp(logger *httplog.Logger) *chi.Mux {
 	r := chi.NewRouter()
+	loc, _ := time.LoadLocation("Asia/Jakarta")
+	time.Local = loc
 
 	// setup dependencies
 	validator := NewValidator()

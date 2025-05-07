@@ -48,6 +48,42 @@ func TestGetAllBooks(t *testing.T) {
 	bookRepository.Truncate()
 }
 
+func TestGetByIDBook(t *testing.T) {
+	type GetByIDBookSuccessResponse struct {
+		StatusCode int                    `json:"status_code"`
+		Success    bool                   `json:"success"`
+		Data       *response.BookResponse `json:"data"`
+	}
+
+	newBook := entity.Book{
+		Title:         "Random Title",
+		Author:        "Random Author",
+		PublishedYear: 2013,
+	}
+	bookRepository.InsertOne(&newBook)
+
+	t.Run("Success_200", func(t *testing.T) {
+		bookURLWithID := bookURL + "/" + newBook.ID
+		req := newRequest(http.MethodGet, bookURLWithID, nil)
+		rec := httptest.NewRecorder()
+		app.ServeHTTP(rec, req)
+
+		require.Equal(t, http.StatusOK, rec.Code)
+
+		var res GetByIDBookSuccessResponse
+		err := json.NewDecoder(rec.Body).Decode(&res)
+		require.Nil(t, err)
+		require.Equal(t, http.StatusOK, res.StatusCode)
+		require.True(t, res.Success)
+		require.Equal(t, newBook.ID, res.Data.ID)
+		require.Equal(t, newBook.Title, res.Data.Title)
+		require.Equal(t, newBook.Author, res.Data.Author)
+		require.Equal(t, newBook.PublishedYear, res.Data.PublishedYear)
+	})
+
+	bookRepository.Truncate()
+}
+
 func TestCreateBook(t *testing.T) {
 	type CreateBookSuccessResponse struct {
 		StatusCode int                    `json:"status_code"`
