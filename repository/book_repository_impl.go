@@ -43,3 +43,10 @@ func (r *BookRepositoryImpl) InsertOne(book *entity.Book) {
 
 	getStorage().books[book.ID] = book
 }
+
+// delete all k,v pair in books map
+func (r *BookRepositoryImpl) Truncate() {
+	for key := range getStorage().books {
+		delete(getStorage().books, key)
+	}
+}
