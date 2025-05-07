@@ -24,6 +24,7 @@ func NewApp(logger *httplog.Logger) *chi.Mux {
 	// setup middleware
 	r.Use(httplog.RequestLogger(logger))
 	r.Use(middleware.Logger)
+	r.Use(middleware.CustomErrorMiddleware)
 
 	// setup custom handler
 	r.NotFound(exception.CustomNotFoundHandler)

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"chi-books/dto/request"
 	"chi-books/dto/response"
 	"chi-books/repository"
 	"context"
@@ -33,4 +34,17 @@ func (s *BookServiceImpl) FindAll(ctx context.Context) []*response.BookResponse 
 	}
 
 	return booksRes
+}
+
+// create a book
+func (s *BookServiceImpl) Create(ctx context.Context, req *request.BookRequest) (*response.BookResponse, error) {
+	if err := s.Validator.Struct(req); err != nil {
+		return nil, err
+	}
+
+	bookE := req.ToEntity()
+	s.BookRepository.InsertOne(bookE)
+
+	bookRes := response.ToBookResponse(bookE)
+	return bookRes, nil
 }

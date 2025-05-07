@@ -9,5 +9,6 @@ import (
 func BookRouter(r chi.Router, bookHandler *handler.BookHandler) {
 	r.Route("/books", func(r chi.Router) {
 		r.Get("/", bookHandler.GetAll)
+		r.Post("/", bookHandler.Create)
 	})
 }
