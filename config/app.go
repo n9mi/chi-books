@@ -1,7 +1,9 @@
 package config
 
 import (
+	"chi-books/exception"
 	"chi-books/handler"
+	"chi-books/middleware"
 	"chi-books/repository"
 	"chi-books/router"
 	"chi-books/service"
@@ -18,6 +20,14 @@ func NewApp(logger *httplog.Logger) *chi.Mux {
 	bookRepository := repository.NewBookRepository()
 	bookService := service.NewBookService(bookRepository, validator)
 	bookHandler := handler.NewBookHandler(bookService)
+
+	// setup middleware
+	r.Use(httplog.RequestLogger(logger))
+	r.Use(middleware.Logger)
+
+	// setup custom handler
+	r.NotFound(exception.CustomNotFoundHandler)
+	r.MethodNotAllowed(exception.CustomMethodNotAllowedHandler)
 
 	// register handler
 	r.Route("/api/v1", func(r chi.Router) {
